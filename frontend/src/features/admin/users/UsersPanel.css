@@ -1,0 +1,262 @@
+.users-panel {
+  display: grid;
+  gap: 18px;
+}
+
+.users-panel__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: end;
+}
+
+.users-panel__header h2 {
+  margin: 0;
+  color: #24150d;
+  font-size: clamp(32px, 4vw, 54px);
+  letter-spacing: -0.06em;
+}
+
+.users-panel__metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.users-panel__metrics span {
+  padding: 8px 12px;
+  border: 1px solid #ead4c0;
+  border-radius: 999px;
+  background: #fff;
+  color: #8a4b25;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.users-panel__grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.user-form,
+.users-list-wrap,
+.user-card {
+  border: 1px solid #ead4c0;
+  border-radius: 26px;
+  background: #fff;
+}
+
+.user-form {
+  position: sticky;
+  top: 24px;
+  display: grid;
+  gap: 16px;
+  padding: 20px;
+}
+
+.user-form h3,
+.user-card h3 {
+  margin: 0;
+  color: #24150d;
+}
+
+.user-form label {
+  display: grid;
+  gap: 8px;
+  color: #4b3324;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.user-form input,
+.user-form select {
+  width: 100%;
+  padding: 12px 13px;
+  border: 1px solid #ead4c0;
+  border-radius: 15px;
+  background: #fffaf4;
+  color: #24150d;
+  font: inherit;
+  outline: none;
+}
+
+.user-form input:focus,
+.user-form select:focus {
+  border-color: #c34d26;
+  box-shadow: 0 0 0 4px rgba(195, 77, 38, 0.12);
+}
+
+.user-form__row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: end;
+}
+
+.user-check {
+  min-height: 48px;
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  border: 1px solid #ead4c0;
+  border-radius: 15px;
+  background: #fffaf4;
+}
+
+.user-check input {
+  width: auto;
+}
+
+.user-form__actions,
+.user-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.user-form button,
+.user-card button,
+.users-filter button {
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: #24150d;
+  color: #fff8f0;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 900;
+}
+
+.user-form button:disabled,
+.user-card button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.user-form .button-secondary,
+.user-card .button-secondary,
+.users-filter button {
+  background: #f6e5d4;
+  color: #4b3324;
+}
+
+.user-card button.danger {
+  background: #ffe5dc;
+  color: #9b2f16;
+}
+
+.users-list-wrap {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+}
+
+.users-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.users-filter button.users-filter__active {
+  background: #24150d;
+  color: #fff8f0;
+}
+
+.users-list {
+  display: grid;
+  gap: 10px;
+}
+
+.user-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  padding: 16px;
+}
+
+.user-card p,
+.user-card small {
+  margin: 6px 0 0;
+  color: #6f503d;
+}
+
+.user-role {
+  display: inline-flex;
+  margin-bottom: 8px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.user-role--cliente {
+  background: #fff0cb;
+  color: #805400;
+}
+
+.user-role--repartidor {
+  background: #e1f0ff;
+  color: #255d91;
+}
+
+.user-role--admin {
+  background: #e6f5df;
+  color: #2f6b1e;
+}
+
+.user-card__status {
+  display: grid;
+  justify-items: end;
+  gap: 6px;
+  color: #4b3324;
+}
+
+.user-card__status span {
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: #fff4e8;
+  color: #70462e;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.users-error,
+.users-empty {
+  margin: 0;
+  padding: 12px;
+  border-radius: 15px;
+}
+
+.users-error {
+  background: #ffe8df;
+  color: #992f19;
+}
+
+.users-empty {
+  color: #7a6254;
+}
+
+@media (max-width: 980px) {
+  .users-panel__header,
+  .user-card {
+    align-items: stretch;
+    grid-template-columns: 1fr;
+  }
+
+  .users-panel__grid,
+  .user-form__row {
+    grid-template-columns: 1fr;
+  }
+
+  .user-form {
+    position: static;
+  }
+
+  .user-card__status {
+    justify-items: start;
+  }
+}

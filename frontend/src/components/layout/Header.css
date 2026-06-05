@@ -1,0 +1,82 @@
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 18px;
+  align-items: center;
+  padding: 18px clamp(18px, 5vw, 64px);
+  background: rgba(255, 248, 240, 0.82);
+  border-bottom: 1px solid rgba(127, 74, 42, 0.12);
+  backdrop-filter: blur(18px);
+}
+
+.site-header__brand {
+  color: #23130b;
+  font-size: 24px;
+  font-weight: 950;
+  letter-spacing: -0.06em;
+  text-decoration: none;
+}
+
+.site-header__nav {
+  justify-self: center;
+  display: flex;
+  gap: 8px;
+}
+
+.site-header__nav a,
+.site-header button {
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 850;
+}
+
+.site-header__nav a {
+  padding: 10px 12px;
+  color: #70462e;
+  text-decoration: none;
+}
+
+.site-header__nav a:hover {
+  background: #fff;
+  color: #23130b;
+}
+
+.site-header__actions {
+  display: flex;
+  gap: 8px;
+  justify-content: end;
+}
+
+.site-header button {
+  padding: 11px 15px;
+  border: 0;
+  background: #23130b;
+  color: #fff8f0;
+  cursor: pointer;
+}
+
+.site-header button.site-header__ghost {
+  border: 1px solid #ead4c0;
+  background: #fff;
+  color: #70462e;
+}
+
+@media (max-width: 760px) {
+  .site-header {
+    grid-template-columns: 1fr auto;
+  }
+
+  .site-header__nav {
+    grid-column: 1 / -1;
+    justify-self: stretch;
+    overflow-x: auto;
+    order: 3;
+  }
+
+  .site-header__actions {
+    gap: 6px;
+  }
+}

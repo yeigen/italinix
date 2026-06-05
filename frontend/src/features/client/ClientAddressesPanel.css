@@ -1,0 +1,54 @@
+.client-address-form,
+.client-checkout {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+}
+
+.client-address-list,
+.client-order-list {
+  display: grid;
+  gap: 12px;
+}
+
+.client-address-card {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 18px;
+}
+
+.client-address-card span {
+  display: inline-flex;
+  margin-top: 10px;
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: #fff0cb;
+  color: #805400;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.client-address-card > div:last-child,
+.client-address-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: start;
+}
+
+.client-address-card button.danger {
+  background: #ffe5dc;
+  color: #9b2f16;
+}
+
+.client-address-form .button-secondary {
+  background: #f6e5d4;
+  color: #4b3324;
+}
+
+@media (max-width: 720px) {
+  .client-address-card {
+    flex-direction: column;
+  }
+}

@@ -2,7 +2,6 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-import models.all_models
 from models.ingredient import Ingredient
 from models.product import Product
 from schemas.product import ProductCreate, ProductUpdate

@@ -2,7 +2,6 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-import models.all_models
 from models.order import Order
 from models.order_item import OrderItem
 from models.order_item_ingredient import OrderItemIngredient

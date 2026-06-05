@@ -1,3 +1,13 @@
+import { useState } from 'react'
+import { AppShell, type ShellNavGroup } from '../../components/layout/AppShell'
+import {
+  BoxIcon,
+  ClipboardIcon,
+  LeafIcon,
+  TagIcon,
+  TruckIcon,
+  UsersIcon,
+} from '../../components/layout/icons'
 import type { AuthUser } from '../auth/types'
 import { CategoriesPanel } from './categories/CategoriesPanel'
 import { IngredientsPanel } from './ingredients/IngredientsPanel'
@@ -13,96 +23,56 @@ type AdminDashboardProps = {
   onLogout: () => void
 }
 
-const adminModules = [
+type AdminView =
+  | 'pedidos'
+  | 'envios'
+  | 'categorias'
+  | 'ingredientes'
+  | 'productos'
+  | 'usuarios'
+
+const adminNav: ShellNavGroup[] = [
   {
-    title: 'Catalogo',
-    description: 'Categorias, ingredientes y productos del menu.',
-    metric: '3 areas',
+    label: 'Operacion',
+    items: [
+      { id: 'pedidos', label: 'Pedidos', icon: <ClipboardIcon /> },
+      { id: 'envios', label: 'Envios', icon: <TruckIcon /> },
+    ],
   },
   {
-    title: 'Pedidos',
-    description: 'Seguimiento de ordenes desde cocina hasta entrega.',
-    metric: 'Tiempo real',
+    label: 'Catalogo',
+    items: [
+      { id: 'categorias', label: 'Categorias', icon: <TagIcon /> },
+      { id: 'ingredientes', label: 'Ingredientes', icon: <LeafIcon /> },
+      { id: 'productos', label: 'Productos', icon: <BoxIcon /> },
+    ],
   },
   {
-    title: 'Envios',
-    description: 'Asignacion y control de repartidores activos.',
-    metric: 'Repartidores',
-  },
-  {
-    title: 'Usuarios',
-    description: 'Clientes, administradores y equipo de reparto.',
-    metric: 'Roles',
+    label: 'Equipo',
+    items: [{ id: 'usuarios', label: 'Usuarios', icon: <UsersIcon /> }],
   },
 ]
 
 export function AdminDashboard({ user, token, onLogout }: AdminDashboardProps) {
+  const [activeView, setActiveView] = useState<AdminView>('pedidos')
+
   return (
-    <main className="admin-dashboard">
-      <aside className="admin-sidebar" aria-label="Navegacion admin">
-        <div>
-          <p className="admin-kicker">Italinix</p>
-          <h1>Admin</h1>
-        </div>
-
-        <nav>
-          <a href="#catalogo">Catalogo</a>
-          <a href="#ingredientes">Ingredientes</a>
-          <a href="#productos">Productos</a>
-          <a href="#pedidos">Pedidos</a>
-          <a href="#envios">Envios</a>
-          <a href="#usuarios">Usuarios</a>
-        </nav>
-      </aside>
-
-      <section className="admin-content">
-        <header className="admin-header">
-          <div>
-            <p className="admin-kicker">Panel administrativo</p>
-            <h2>Buen servicio empieza con una cocina organizada.</h2>
-          </div>
-
-          <div className="admin-session">
-            <span>{user.name}</span>
-            <small>{user.email}</small>
-            <button type="button" onClick={onLogout}>
-              Cerrar sesion
-            </button>
-          </div>
-        </header>
-
-        <section className="admin-summary" aria-label="Resumen operativo">
-          <article>
-            <span>Menu</span>
-            <strong>Listo para editar</strong>
-          </article>
-          <article>
-            <span>Pedidos</span>
-            <strong>Conectado</strong>
-          </article>
-          <article>
-            <span>Envios</span>
-            <strong>Conectado</strong>
-          </article>
-        </section>
-
-        <section className="admin-modules" aria-label="Modulos admin">
-          {adminModules.map((module) => (
-            <article key={module.title} className="admin-module-card">
-              <span>{module.metric}</span>
-              <h3>{module.title}</h3>
-              <p>{module.description}</p>
-            </article>
-          ))}
-        </section>
-
-        <CategoriesPanel token={token} />
-        <IngredientsPanel token={token} />
-        <ProductsPanel token={token} />
-        <OrdersPanel token={token} />
-        <ShippingsPanel token={token} />
-        <UsersPanel token={token} currentUserId={user.id} />
-      </section>
-    </main>
+    <AppShell
+      brand="Italinix"
+      roleLabel="Admin"
+      accent="admin"
+      nav={adminNav}
+      activeId={activeView}
+      onNavigate={(id) => setActiveView(id as AdminView)}
+      user={{ name: user.name, email: user.email }}
+      onLogout={onLogout}
+    >
+      {activeView === 'pedidos' && <OrdersPanel token={token} />}
+      {activeView === 'envios' && <ShippingsPanel token={token} />}
+      {activeView === 'categorias' && <CategoriesPanel token={token} />}
+      {activeView === 'ingredientes' && <IngredientsPanel token={token} />}
+      {activeView === 'productos' && <ProductsPanel token={token} />}
+      {activeView === 'usuarios' && <UsersPanel token={token} currentUserId={user.id} />}
+    </AppShell>
   )
 }

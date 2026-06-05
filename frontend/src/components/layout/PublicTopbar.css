@@ -1,0 +1,72 @@
+.auth-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.public-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px clamp(18px, 5vw, 64px);
+  border-bottom: 1px solid rgba(127, 74, 42, 0.12);
+  background: rgba(255, 248, 240, 0.82);
+  backdrop-filter: blur(18px);
+}
+
+.public-topbar__brand {
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  font-size: 24px;
+  font-weight: 950;
+  letter-spacing: -0.06em;
+}
+
+.public-topbar__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.public-topbar__ghost,
+.public-topbar__cta {
+  padding: 11px 15px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 850;
+  transition: opacity 160ms var(--ease), background 160ms var(--ease);
+}
+
+.public-topbar__ghost {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink-soft);
+}
+
+.public-topbar__ghost:hover {
+  background: var(--surface-2);
+}
+
+.public-topbar__cta {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.public-topbar__cta:hover {
+  opacity: 0.9;
+}
+
+@media (max-width: 560px) {
+  .public-topbar__ghost {
+    display: none;
+  }
+}

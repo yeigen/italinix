@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react'
+import { PublicTopbar } from '../../components/layout/PublicTopbar'
 import { ApiError } from '../../lib/api'
 import { useAuth } from './useAuth'
 import './RegisterPage.css'
@@ -47,19 +48,19 @@ export function RegisterPage({ onBack, onLoginClick }: RegisterPageProps) {
   }
 
   return (
-    <main className="register-page">
-      <section className="register-copy" aria-labelledby="register-title">
-        <button type="button" onClick={onBack}>
-          Volver al inicio
-        </button>
-        <p className="register-kicker">Cuenta cliente</p>
-        <h1 id="register-title">Crea tu cuenta y empieza a pedir.</h1>
-        <p>
-          Guarda tus datos, prepara direcciones y sigue cada pedido desde cocina hasta entrega.
-        </p>
-      </section>
+    <div className="auth-shell">
+      <PublicTopbar onBack={onBack} actionLabel="Iniciar sesion" onAction={onLoginClick} />
 
-      <section className="register-card" aria-label="Registro cliente">
+      <main className="register-page">
+        <section className="register-copy" aria-labelledby="register-title">
+          <p className="register-kicker">Cuenta cliente</p>
+          <h1 id="register-title">Crea tu cuenta y empieza a pedir.</h1>
+          <p>
+            Guarda tus datos, prepara direcciones y sigue cada pedido desde cocina hasta entrega.
+          </p>
+        </section>
+
+        <section className="register-card" aria-label="Registro cliente">
         <div>
           <p className="register-card__eyebrow">Registro</p>
           <h2>Datos de cliente</h2>
@@ -121,13 +122,14 @@ export function RegisterPage({ onBack, onLoginClick }: RegisterPageProps) {
           </button>
         </form>
 
-        <p className="register-login">
-          Ya tienes cuenta?{' '}
-          <button type="button" onClick={onLoginClick}>
-            Inicia sesion
-          </button>
-        </p>
-      </section>
-    </main>
+          <p className="register-login">
+            Ya tienes cuenta?{' '}
+            <button type="button" onClick={onLoginClick}>
+              Inicia sesion
+            </button>
+          </p>
+        </section>
+      </main>
+    </div>
   )
 }

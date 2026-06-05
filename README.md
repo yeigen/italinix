@@ -23,3 +23,10 @@ Usan `DATABASE_URL` desde `backend/.env`.
 cd backend
 uv run pytest -v
 ```
+
+## Frontend
+
+```bash
+cd frontend
+pnpm dev
+```

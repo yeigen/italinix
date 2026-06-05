@@ -223,6 +223,15 @@
   letter-spacing: -0.02em;
 }
 
+.landing-menu__notice {
+  margin: 30px 0 0;
+  padding: 20px 22px;
+  border: 1px solid #ead4c0;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.72);
+  color: #60402d;
+}
+
 /* Skeleton placeholders while the menu loads from the backend */
 .landing-menu__card--skeleton .landing-menu__image {
   background: linear-gradient(100deg, #f1ddc8 30%, #f8ecdd 50%, #f1ddc8 70%);

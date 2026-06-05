@@ -1,11 +1,4 @@
 import { useEffect, useState } from 'react'
-import bruschettaImage from '../../../assets/menu/bruschetta.jpg'
-import carbonaraImage from '../../../assets/menu/carbonara.jpg'
-import lasagnaImage from '../../../assets/menu/lasagna.jpg'
-import margheritaImage from '../../../assets/menu/margherita.jpg'
-import pepperoniImage from '../../../assets/menu/pepperoni.jpg'
-import risottoImage from '../../../assets/menu/risotto.jpg'
-import tiramisuImage from '../../../assets/menu/tiramisu.jpg'
 import heroImage from '../../../assets/portada-italianix.webp'
 import { Footer } from '../../components/layout/Footer'
 import { Header } from '../../components/layout/Header'
@@ -20,140 +13,33 @@ type LandingPageProps = {
   onRegisterClick: () => void
 }
 
-type MenuDish = {
-  id: string
-  name: string
-  description: string
-  price: number | string
-  image: string
-  category?: string
-}
-
-// Image library for the menu. Products in the backend don't carry photos yet,
-// so we resolve an appetizing fallback by dish name, then by category.
-const imagesByName: Array<[string, string]> = [
-  ['margherita', margheritaImage],
-  ['pepperoni', pepperoniImage],
-  ['peperoni', pepperoniImage],
-  ['carbonara', carbonaraImage],
-  ['alfredo', carbonaraImage],
-  ['lasa', lasagnaImage],
-  ['risotto', risottoImage],
-  ['bruschetta', bruschettaImage],
-  ['tiramis', tiramisuImage],
-]
-
-const imagesByCategory: Array<[string, string]> = [
-  ['pizza', margheritaImage],
-  ['pasta', carbonaraImage],
-  ['risotto', risottoImage],
-  ['antipast', bruschettaImage],
-  ['entrada', bruschettaImage],
-  ['postre', tiramisuImage],
-  ['dolce', tiramisuImage],
-  ['dessert', tiramisuImage],
-]
-
-function resolveDishImage(product: ProductDetail): string {
-  if (product.image_url) {
-    return product.image_url.startsWith('http')
-      ? product.image_url
-      : `${API_URL}${product.image_url}`
+// El backend es la fuente de la verdad de las imágenes. Solo resolvemos rutas
+// relativas contra el host del backend; las absolutas se usan tal cual.
+function resolveImageSrc(imageUrl: string | null): string | undefined {
+  if (!imageUrl) {
+    return undefined
   }
-
-  const name = product.name.toLowerCase()
-  const byName = imagesByName.find(([key]) => name.includes(key))
-  if (byName) {
-    return byName[1]
-  }
-
-  const category = (product.category?.name ?? '').toLowerCase()
-  const byCategory = imagesByCategory.find(([key]) => category.includes(key))
-  return byCategory ? byCategory[1] : margheritaImage
+  return imageUrl.startsWith('http') ? imageUrl : `${API_URL}${imageUrl}`
 }
-
-function toDish(product: ProductDetail): MenuDish {
-  return {
-    id: String(product.id),
-    name: product.name,
-    description: product.description || 'Receta de la casa, recien hecha.',
-    price: product.price,
-    image: resolveDishImage(product),
-    category: product.category?.name,
-  }
-}
-
-// Shown only if the menu cannot be loaded, so the landing never looks broken.
-const fallbackMenu: MenuDish[] = [
-  {
-    id: 'f-margherita',
-    name: 'Pizza Margherita',
-    description: 'Tomate San Marzano, mozzarella fresca y albahaca.',
-    price: 9.99,
-    image: margheritaImage,
-    category: 'Pizzas',
-  },
-  {
-    id: 'f-pepperoni',
-    name: 'Pizza Pepperoni',
-    description: 'Doble pepperoni, mozzarella y salsa de tomate.',
-    price: 11.99,
-    image: pepperoniImage,
-    category: 'Pizzas',
-  },
-  {
-    id: 'f-carbonara',
-    name: 'Spaghetti alla Carbonara',
-    description: 'Huevo, guanciale, pecorino y pimienta negra.',
-    price: 12.5,
-    image: carbonaraImage,
-    category: 'Pastas',
-  },
-  {
-    id: 'f-lasagna',
-    name: 'Lasagna alla Bolognese',
-    description: 'Capas de pasta, ragu lento y bechamel gratinada.',
-    price: 13.9,
-    image: lasagnaImage,
-    category: 'Pastas',
-  },
-  {
-    id: 'f-risotto',
-    name: 'Risotto ai Funghi',
-    description: 'Arroz cremoso con hongos y parmesano.',
-    price: 13.2,
-    image: risottoImage,
-    category: 'Risotti',
-  },
-  {
-    id: 'f-tiramisu',
-    name: 'Tiramisu',
-    description: 'Cafe, mascarpone y cacao. El clasico de la casa.',
-    price: 6.5,
-    image: tiramisuImage,
-    category: 'Postres',
-  },
-]
 
 const steps = ['Elige tu plato', 'Personaliza ingredientes', 'Sigue tu pedido']
 
 export function LandingPage({ onLoginClick, onRegisterClick }: LandingPageProps) {
-  const [dishes, setDishes] = useState<MenuDish[] | null>(null)
+  const [products, setProducts] = useState<ProductDetail[] | null>(null)
+  const [failed, setFailed] = useState(false)
 
   useEffect(() => {
     let ignore = false
 
     getMenuProducts()
-      .then((products) => {
-        if (ignore) {
-          return
+      .then((data) => {
+        if (!ignore) {
+          setProducts(data.filter((product) => product.available))
         }
-        const available = products.filter((product) => product.available)
-        setDishes(available.length > 0 ? available.map(toDish) : fallbackMenu)
       })
       .catch(() => {
         if (!ignore) {
-          setDishes(fallbackMenu)
+          setFailed(true)
         }
       })
 
@@ -202,32 +88,45 @@ export function LandingPage({ onLoginClick, onRegisterClick }: LandingPageProps)
             <h2 id="menu-title">Nuestros favoritos, listos para pedir.</h2>
           </div>
 
-          <div className="landing-menu__grid">
-            {dishes === null
-              ? [0, 1, 2].map((index) => (
-                  <article key={`skeleton-${index}`} className="landing-menu__card landing-menu__card--skeleton">
-                    <div className="landing-menu__image" />
-                    <div className="landing-menu__content">
-                      <span className="landing-menu__bar landing-menu__bar--sm" />
-                      <span className="landing-menu__bar" />
-                      <span className="landing-menu__bar landing-menu__bar--lg" />
-                    </div>
-                  </article>
-                ))
-              : dishes.map((dish) => (
-                  <article key={dish.id} className="landing-menu__card">
+          {failed ? (
+            <p className="landing-menu__notice">
+              Estamos sirviendo el menu. Vuelve en un momento para ver nuestros platos.
+            </p>
+          ) : products === null ? (
+            <div className="landing-menu__grid">
+              {[0, 1, 2].map((index) => (
+                <article key={`skeleton-${index}`} className="landing-menu__card landing-menu__card--skeleton">
+                  <div className="landing-menu__image" />
+                  <div className="landing-menu__content">
+                    <span className="landing-menu__bar landing-menu__bar--sm" />
+                    <span className="landing-menu__bar" />
+                    <span className="landing-menu__bar landing-menu__bar--lg" />
+                  </div>
+                </article>
+              ))}
+            </div>
+          ) : products.length === 0 ? (
+            <p className="landing-menu__notice">Pronto tendremos nuevos platos en el menu.</p>
+          ) : (
+            <div className="landing-menu__grid">
+              {products.map((product) => {
+                const imageSrc = resolveImageSrc(product.image_url)
+                return (
+                  <article key={product.id} className="landing-menu__card">
                     <div className="landing-menu__image">
-                      <img src={dish.image} alt={dish.name} loading="lazy" />
+                      {imageSrc && <img src={imageSrc} alt={product.name} loading="lazy" />}
                     </div>
                     <div className="landing-menu__content">
-                      {dish.category && <span className="landing-menu__tag">{dish.category}</span>}
-                      <h3>{dish.name}</h3>
-                      <p>{dish.description}</p>
-                      <strong className="landing-menu__price">{formatCurrency(dish.price)}</strong>
+                      <span className="landing-menu__tag">{product.category.name}</span>
+                      <h3>{product.name}</h3>
+                      <p>{product.description || 'Receta de la casa, recien hecha.'}</p>
+                      <strong className="landing-menu__price">{formatCurrency(product.price)}</strong>
                     </div>
                   </article>
-                ))}
-          </div>
+                )
+              })}
+            </div>
+          )}
         </section>
 
         <section

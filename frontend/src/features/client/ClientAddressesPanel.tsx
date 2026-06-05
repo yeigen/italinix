@@ -1,4 +1,6 @@
 import { useState, type FormEvent } from 'react'
+import { SectionHeader } from '../../components/layout/SectionHeader'
+import { EmptyState } from '../../components/ui/EmptyState'
 import {
   createLocation,
   deleteLocation,
@@ -102,10 +104,12 @@ export function ClientAddressesPanel({
 
   return (
     <section id="direcciones" className="client-addresses" aria-labelledby="addresses-title">
-      <div className="client-section-heading">
-        <p className="client-kicker">Direcciones</p>
-        <h2 id="addresses-title">Guarda tus puntos de entrega</h2>
-      </div>
+      <SectionHeader
+        kicker="Direcciones"
+        title="Guarda tus puntos de entrega"
+        titleId="addresses-title"
+        description="Crea y actualiza las direcciones donde quieres recibir tus pedidos."
+      />
 
       {error && <p className="client-alert">{error}</p>}
 
@@ -169,7 +173,13 @@ export function ClientAddressesPanel({
         </form>
 
         <div className="client-address-list">
-          {locations.length === 0 && <p className="client-empty">Aun no tienes direcciones.</p>}
+          {locations.length === 0 && (
+            <EmptyState
+              compact
+              title="Aun no tienes direcciones"
+              description="Agrega tu primera direccion con el formulario."
+            />
+          )}
           {locations.map((location) => (
             <article key={location.id} className="client-address-card">
               <div>

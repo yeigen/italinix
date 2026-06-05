@@ -1,17 +1,7 @@
-.client-section-heading h2 {
-  margin: 0;
-  color: #23130b;
-  font-size: clamp(36px, 6vw, 72px);
-  line-height: 0.94;
-  letter-spacing: -0.06em;
-}
-
 .client-menu,
-.client-addresses,
-.client-orders {
+.client-addresses {
   display: grid;
-  gap: 22px;
-  padding: clamp(46px, 7vw, 86px) clamp(18px, 5vw, 64px);
+  gap: 20px;
 }
 
 .client-menu__layout,

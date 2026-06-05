@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import { SectionHeader } from '../../components/layout/SectionHeader'
+import { EmptyState } from '../../components/ui/EmptyState'
 import { ApiError } from '../../lib/api'
 import { getMenuProducts } from './clientApi'
 import { formatCurrency, type CartItem } from './clientTypes'
@@ -100,17 +102,24 @@ export function ClientMenuPanel({ onAddItem }: ClientMenuPanelProps) {
 
   return (
     <section id="menu" className="client-menu" aria-labelledby="client-menu-title">
-      <div className="client-section-heading">
-        <p className="client-kicker">Menu</p>
-        <h2 id="client-menu-title">Elige tus favoritos</h2>
-      </div>
+      <SectionHeader
+        kicker="Menu"
+        title="Elige tus favoritos"
+        titleId="client-menu-title"
+        description="Explora el menu, personaliza adicionales y agrega todo al carrito."
+      />
 
       {error && <p className="client-alert">{error}</p>}
 
       <div className="client-menu__layout">
         <div className="client-products">
           {isLoading && <p className="client-empty">Cargando menu...</p>}
-          {!isLoading && products.length === 0 && <p className="client-empty">No hay productos disponibles.</p>}
+          {!isLoading && products.length === 0 && (
+            <EmptyState
+              title="No hay productos disponibles"
+              description="Vuelve mas tarde, el menu se esta preparando."
+            />
+          )}
 
           {products.map((product) => {
             const selection = selections[product.id] ?? { ingredientIds: [], notes: '' }

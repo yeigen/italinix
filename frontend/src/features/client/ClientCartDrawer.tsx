@@ -6,6 +6,7 @@ type ClientCartDrawerProps = {
   isOpen: boolean
   cartItems: CartItem[]
   onClose: () => void
+  onCheckoutClick: () => void
   onRemoveItem: (itemId: string) => void
   onChangeQuantity: (itemId: string, quantity: number) => void
 }
@@ -14,6 +15,7 @@ export function ClientCartDrawer({
   isOpen,
   cartItems,
   onClose,
+  onCheckoutClick,
   onRemoveItem,
   onChangeQuantity,
 }: ClientCartDrawerProps) {
@@ -72,9 +74,9 @@ export function ClientCartDrawer({
             <span>Total</span>
             <strong>{formatCurrency(total)}</strong>
           </div>
-          <a href="#pedidos" onClick={onClose} aria-disabled={cartItems.length === 0}>
+          <button type="button" onClick={onCheckoutClick} disabled={cartItems.length === 0}>
             Ir a checkout
-          </a>
+          </button>
         </footer>
       </div>
     </Drawer>

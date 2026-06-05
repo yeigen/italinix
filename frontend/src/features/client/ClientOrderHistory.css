@@ -1,0 +1,118 @@
+.client-history-table-wrap {
+  overflow: auto;
+  border: 1px solid #ead4c0;
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.client-history-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 940px;
+}
+
+.client-history-table th,
+.client-history-table td {
+  padding: 16px;
+  border-bottom: 1px solid #f0ddca;
+  text-align: left;
+  vertical-align: top;
+}
+
+.client-history-table th {
+  color: #70462e;
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.client-history-table td,
+.client-history-table strong {
+  color: #23130b;
+  font-weight: 850;
+}
+
+.client-history-status {
+  display: inline-flex;
+  padding: 7px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.client-history-status--pending,
+.client-history-status--confirmed {
+  background: #fff0cb;
+  color: #805400;
+}
+
+.client-history-status--preparing,
+.client-history-status--ready {
+  background: #e1f0ff;
+  color: #255d91;
+}
+
+.client-history-status--delivered {
+  background: #e6f5df;
+  color: #2f6b1e;
+}
+
+.client-history-status--cancelled {
+  background: #ffe5dc;
+  color: #9b2f16;
+}
+
+.client-history-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.client-history-items span {
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: #fff4e8;
+  color: #70462e;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+@media (max-width: 720px) {
+  .client-history-table {
+    min-width: 0;
+  }
+
+  .client-history-table thead {
+    display: none;
+  }
+
+  .client-history-table,
+  .client-history-table tbody,
+  .client-history-table tr,
+  .client-history-table td {
+    display: block;
+  }
+
+  .client-history-table tr {
+    padding: 14px;
+    border-bottom: 1px solid #f0ddca;
+  }
+
+  .client-history-table td {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 0;
+  }
+
+  .client-history-table td::before {
+    content: attr(data-label);
+    color: #70462e;
+    font-size: 12px;
+    font-weight: 950;
+    text-transform: uppercase;
+  }
+}

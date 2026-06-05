@@ -1,12 +1,18 @@
 import { useEffect, useState } from 'react'
+import { AppShell, type ShellNavGroup } from '../../components/layout/AppShell'
+import { CartIcon, MenuIcon, PinIcon, ReceiptIcon } from '../../components/layout/icons'
+import { Badge } from '../../components/ui/Badge'
 import type { AuthUser } from '../auth/types'
 import { ClientAddressesPanel } from './ClientAddressesPanel'
 import { ClientCartDrawer } from './ClientCartDrawer'
+import { ClientCheckoutPanel } from './ClientCheckoutPanel'
 import { ClientMenuPanel } from './ClientMenuPanel'
-import { ClientOrdersPanel } from './ClientOrdersPanel'
+import { ClientOrderHistory } from './ClientOrderHistory'
 import { getUserLocations, getUserOrders, type Location, type OrderDetail } from './clientApi'
 import { formatCurrency, getCartTotal, type CartItem } from './clientTypes'
 import './ClientHome.css'
+
+type ClientView = 'menu' | 'direcciones' | 'checkout' | 'pedidos'
 
 type ClientHomeProps = {
   user: AuthUser
@@ -19,6 +25,7 @@ export function ClientHome({ user, token, onLogout }: ClientHomeProps) {
   const [locations, setLocations] = useState<Location[]>([])
   const [orders, setOrders] = useState<OrderDetail[]>([])
   const [isCartOpen, setIsCartOpen] = useState(false)
+  const [activeView, setActiveView] = useState<ClientView>('menu')
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
@@ -56,6 +63,11 @@ export function ClientHome({ user, token, onLogout }: ClientHomeProps) {
     setIsCartOpen(true)
   }
 
+  function goToCheckout() {
+    setIsCartOpen(false)
+    setActiveView('checkout')
+  }
+
   function removeCartItem(itemId: string) {
     setCartItems((currentItems) => currentItems.filter((item) => item.id !== itemId))
   }
@@ -68,72 +80,83 @@ export function ClientHome({ user, token, onLogout }: ClientHomeProps) {
     )
   }
 
+  const clientNav: ShellNavGroup[] = [
+    {
+      items: [
+        { id: 'menu', label: 'Menu', icon: <MenuIcon /> },
+        { id: 'direcciones', label: 'Direcciones', icon: <PinIcon /> },
+        { id: 'checkout', label: 'Checkout', icon: <CartIcon /> },
+        { id: 'pedidos', label: 'Mis pedidos', icon: <ReceiptIcon /> },
+      ],
+    },
+  ]
+
+  const cartAction = (
+    <button type="button" className="client-cart-trigger" onClick={() => setIsCartOpen(true)}>
+      <CartIcon />
+      <span className="client-cart-trigger__label">Carrito</span>
+      <strong className="client-cart-trigger__total">{formatCurrency(getCartTotal(cartItems))}</strong>
+      {cartItems.length > 0 && (
+        <Badge tone="accent" count>
+          {cartItems.length}
+        </Badge>
+      )}
+    </button>
+  )
+
   return (
-    <main className="client-home">
-      <header className="client-header">
-        <a href="#inicio" className="client-header__brand">
-          Italinix
-        </a>
-        <nav aria-label="Cliente">
-          <a href="#menu">Menu</a>
-          <a href="#direcciones">Direcciones</a>
-          <a href="#pedidos">Mis pedidos</a>
-        </nav>
-        <div className="client-header__actions">
-          <button type="button" className="client-cart-button" onClick={() => setIsCartOpen(true)}>
-            Carrito
-            {cartItems.length > 0 && <span>{cartItems.length}</span>}
-          </button>
-          <button type="button" onClick={onLogout}>
-            Cerrar sesion
-          </button>
-        </div>
-      </header>
+    <>
+      <AppShell
+        brand="Italinix"
+        roleLabel="Cliente"
+        accent="client"
+        nav={clientNav}
+        activeId={activeView}
+        onNavigate={(id) => setActiveView(id as ClientView)}
+        user={{ name: user.name, email: user.email }}
+        onLogout={onLogout}
+        actions={cartAction}
+      >
+        {error && <p className="client-alert">{error}</p>}
 
-      <section id="inicio" className="client-hero">
-        <p className="client-kicker">Hola, {user.name}</p>
-        <h1>Tu proximo pedido italiano empieza aqui.</h1>
-        <p>
-          Explora el menu, guarda tu direccion y confirma tu pedido con seguimiento desde
-          cocina hasta entrega.
-        </p>
-      </section>
+        {activeView === 'menu' && <ClientMenuPanel onAddItem={addCartItem} />}
 
-      {error && <p className="client-home__error">{error}</p>}
+        {activeView === 'direcciones' && (
+          <ClientAddressesPanel
+            userId={user.id}
+            token={token}
+            locations={locations}
+            onLocationsChange={setLocations}
+          />
+        )}
 
-      <ClientMenuPanel
-        onAddItem={addCartItem}
-      />
+        {activeView === 'checkout' && (
+          <ClientCheckoutPanel
+            userId={user.id}
+            token={token}
+            cartItems={cartItems}
+            locations={locations}
+            onOrderCreated={(order) => {
+              setOrders((currentOrders) => [order, ...currentOrders])
+              setActiveView('pedidos')
+            }}
+            onClearCart={() => setCartItems([])}
+            onGoToMenu={() => setActiveView('menu')}
+            onGoToAddresses={() => setActiveView('direcciones')}
+          />
+        )}
 
-      <ClientAddressesPanel
-        userId={user.id}
-        token={token}
-        locations={locations}
-        onLocationsChange={setLocations}
-      />
-
-      <ClientOrdersPanel
-        userId={user.id}
-        token={token}
-        cartItems={cartItems}
-        locations={locations}
-        orders={orders}
-        onOrderCreated={(order) => setOrders((currentOrders) => [order, ...currentOrders])}
-        onClearCart={() => setCartItems([])}
-      />
-
-      <button type="button" className="client-floating-cart" onClick={() => setIsCartOpen(true)}>
-        <span>Carrito ({cartItems.length})</span>
-        <strong>{formatCurrency(getCartTotal(cartItems))}</strong>
-      </button>
+        {activeView === 'pedidos' && <ClientOrderHistory orders={orders} />}
+      </AppShell>
 
       <ClientCartDrawer
         isOpen={isCartOpen}
         cartItems={cartItems}
         onClose={() => setIsCartOpen(false)}
+        onCheckoutClick={goToCheckout}
         onRemoveItem={removeCartItem}
         onChangeQuantity={changeCartItemQuantity}
       />
-    </main>
+    </>
   )
 }

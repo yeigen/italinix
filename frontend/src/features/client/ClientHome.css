@@ -1,200 +1,57 @@
-.client-home {
-  min-height: 100vh;
-  background:
-    radial-gradient(circle at 12% 4%, rgba(195, 77, 38, 0.13), transparent 30%),
-    #fff8f0;
-  color: #23130b;
-}
-
-.client-header {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 18px;
-  align-items: center;
-  padding: 18px clamp(18px, 5vw, 64px);
-  border-bottom: 1px solid rgba(127, 74, 42, 0.12);
-  background: rgba(255, 248, 240, 0.82);
-  backdrop-filter: blur(18px);
-}
-
-.client-header__brand {
-  color: #23130b;
-  font-size: 24px;
-  font-weight: 950;
-  letter-spacing: -0.06em;
-  text-decoration: none;
-}
-
-.client-header nav {
-  justify-self: center;
-  display: flex;
-  gap: 8px;
-}
-
-.client-header a,
-.client-header button {
-  border-radius: 999px;
-  font-size: 14px;
-  font-weight: 850;
-}
-
-.client-header nav a {
-  padding: 10px 12px;
-  color: #70462e;
-  text-decoration: none;
-}
-
-.client-header__actions {
-  display: flex;
-  gap: 8px;
-  justify-content: end;
-}
-
-.client-header button {
-  padding: 11px 15px;
-  border: 0;
-  background: #23130b;
-  color: #fff8f0;
-  cursor: pointer;
-}
-
-.client-cart-button {
-  display: inline-flex;
-  gap: 8px;
-  align-items: center;
-  background: #a5431f !important;
-}
-
-.client-cart-button span {
-  display: grid;
-  min-width: 22px;
-  height: 22px;
-  place-items: center;
-  border-radius: 999px;
-  background: #fff8f0;
-  color: #a5431f;
-  font-size: 12px;
-  font-weight: 950;
-}
-
-.client-hero {
-  max-width: 980px;
-  padding: clamp(48px, 8vw, 110px) clamp(18px, 5vw, 64px);
-}
+/* The client layout now uses the shared AppShell. Only client-specific bits
+   remain here: the persistent cart trigger and the shared accent eyebrow. */
 
 .client-kicker {
   margin: 0 0 12px;
-  color: #a5431f;
+  color: var(--accent);
   font-size: 12px;
   font-weight: 950;
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 
-.client-hero h1 {
-  margin: 0;
-  font-size: clamp(54px, 9vw, 112px);
-  line-height: 0.88;
-  letter-spacing: -0.065em;
-}
-
-.client-hero p:last-child {
-  max-width: 620px;
-  margin: 26px 0 0;
-  color: #60402d;
-  font-size: 20px;
-  line-height: 1.5;
-}
-
-.client-home__error {
-  margin: 0 clamp(18px, 5vw, 64px);
-  padding: 12px;
-  border-radius: 15px;
-  background: #ffe8df;
-  color: #992f19;
-}
-
-.client-floating-cart {
-  position: fixed;
-  right: clamp(16px, 4vw, 34px);
-  bottom: clamp(16px, 4vw, 34px);
-  z-index: 30;
-  display: grid;
-  gap: 2px;
-  padding: 13px 18px;
+.client-cart-trigger {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 14px;
   border: 0;
-  border-radius: 22px;
-  background: #23130b;
+  border-radius: var(--radius);
+  background: var(--accent);
   color: #fff8f0;
-  box-shadow: 0 18px 48px rgba(35, 19, 11, 0.24);
   cursor: pointer;
   font: inherit;
-  text-align: left;
-  transition: transform 160ms ease, box-shadow 160ms ease;
-}
-
-.client-floating-cart:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 22px 56px rgba(35, 19, 11, 0.3);
-}
-
-.client-floating-cart span {
-  color: #f3c9a6;
-  font-size: 13px;
   font-weight: 850;
+  transition: transform 160ms var(--ease), box-shadow 160ms var(--ease), opacity 160ms var(--ease);
 }
 
-.client-floating-cart strong {
-  font-size: 18px;
+.client-cart-trigger:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
-.client-next {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-  padding: 0 clamp(18px, 5vw, 64px) clamp(48px, 8vw, 96px);
+.client-cart-trigger__label {
+  flex: 1;
+  text-align: left;
 }
 
-.client-next article {
-  min-height: 250px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 24px;
-  border: 1px solid #ead4c0;
-  border-radius: 32px;
-  background: rgba(255, 255, 255, 0.72);
+.client-cart-trigger__total {
+  font-size: 15px;
 }
 
-.client-next span {
-  margin-bottom: auto;
-  color: #a5431f;
-  font-weight: 950;
+.client-cart-trigger .badge {
+  background: #fff8f0;
+  color: var(--accent);
 }
 
-.client-next h2 {
-  margin: 0;
-  font-size: 32px;
-  letter-spacing: -0.05em;
+/* Compact form inside the mobile topbar: icon + badge only. */
+.shell__topbar-actions .client-cart-trigger {
+  width: auto;
+  padding: 9px 12px;
 }
 
-.client-next p {
-  margin: 10px 0 0;
-  color: #60402d;
-}
-
-@media (max-width: 860px) {
-  .client-header,
-  .client-next {
-    grid-template-columns: 1fr;
-  }
-
-  .client-header nav {
-    justify-self: start;
-    overflow-x: auto;
-  }
-
-  .client-header__actions {
-    justify-content: start;
-  }
+.shell__topbar-actions .client-cart-trigger__label,
+.shell__topbar-actions .client-cart-trigger__total {
+  display: none;
 }

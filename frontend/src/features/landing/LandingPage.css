@@ -202,6 +202,68 @@
   line-height: 1.55;
 }
 
+.landing-menu__tag {
+  display: inline-flex;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(165, 67, 31, 0.1);
+  color: #a5431f;
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.landing-menu__price {
+  display: inline-block;
+  margin-top: 14px;
+  color: #23130b;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+}
+
+/* Skeleton placeholders while the menu loads from the backend */
+.landing-menu__card--skeleton .landing-menu__image {
+  background: linear-gradient(100deg, #f1ddc8 30%, #f8ecdd 50%, #f1ddc8 70%);
+  background-size: 200% 100%;
+  animation: landing-shimmer 1.2s ease-in-out infinite;
+}
+
+.landing-menu__card--skeleton .landing-menu__image::after {
+  display: none;
+}
+
+.landing-menu__bar {
+  display: block;
+  width: 90%;
+  height: 14px;
+  margin-bottom: 12px;
+  border-radius: 999px;
+  background: linear-gradient(100deg, #f1ddc8 30%, #f8ecdd 50%, #f1ddc8 70%);
+  background-size: 200% 100%;
+  animation: landing-shimmer 1.2s ease-in-out infinite;
+}
+
+.landing-menu__bar--sm {
+  width: 38%;
+}
+
+.landing-menu__bar--lg {
+  width: 70%;
+  height: 22px;
+  margin-bottom: 0;
+}
+
+@keyframes landing-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
 .landing-experience {
   display: grid;
   grid-template-columns: minmax(0, 0.85fr) minmax(320px, 1fr);

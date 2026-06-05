@@ -1,0 +1,133 @@
+.client-cart-drawer {
+  min-height: 0;
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+.client-cart-drawer__items {
+  min-height: 0;
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  overflow: auto;
+  padding: 18px;
+}
+
+.client-cart-drawer__empty {
+  display: grid;
+  align-content: center;
+  gap: 8px;
+  padding: 34px 18px;
+  text-align: center;
+}
+
+.client-cart-drawer__empty h3,
+.client-cart-drawer__item h3 {
+  margin: 0;
+  color: #23130b;
+}
+
+.client-cart-drawer__empty p,
+.client-cart-drawer__item p,
+.client-cart-drawer__item small {
+  margin: 0;
+  color: #60402d;
+}
+
+.client-cart-drawer__item {
+  display: grid;
+  gap: 9px;
+  padding: 14px;
+  border: 1px solid #ead4c0;
+  border-radius: 22px;
+  background: #fff;
+  animation: cart-item-enter 180ms ease both;
+}
+
+.client-cart-drawer__item > div:first-child,
+.client-cart-drawer__footer > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.client-cart-drawer__item strong,
+.client-cart-drawer__footer strong {
+  color: #23130b;
+}
+
+.client-cart-drawer__actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: end;
+}
+
+.client-cart-drawer__actions label {
+  display: grid;
+  gap: 6px;
+  color: #4b3324;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.client-cart-drawer__actions input {
+  width: 82px;
+  padding: 9px;
+  border: 1px solid #ead4c0;
+  border-radius: 12px;
+  background: #fffaf4;
+  font: inherit;
+}
+
+.client-cart-drawer__actions button {
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: #ffe5dc;
+  color: #9b2f16;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 900;
+}
+
+.client-cart-drawer__footer {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  border-top: 1px solid #ead4c0;
+  background: #fff8f0;
+}
+
+.client-cart-drawer__footer span {
+  color: #70462e;
+  font-weight: 900;
+}
+
+.client-cart-drawer__footer a {
+  display: grid;
+  place-items: center;
+  padding: 14px 16px;
+  border-radius: 999px;
+  background: #23130b;
+  color: #fff8f0;
+  font-weight: 950;
+  text-decoration: none;
+}
+
+.client-cart-drawer__footer a[aria-disabled='true'] {
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+@keyframes cart-item-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

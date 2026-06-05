@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import type { AuthUser } from '../auth/types'
 import { ClientAddressesPanel } from './ClientAddressesPanel'
+import { ClientCartDrawer } from './ClientCartDrawer'
 import { ClientMenuPanel } from './ClientMenuPanel'
 import { ClientOrdersPanel } from './ClientOrdersPanel'
 import { getUserLocations, getUserOrders, type Location, type OrderDetail } from './clientApi'
-import type { CartItem } from './clientTypes'
+import { formatCurrency, getCartTotal, type CartItem } from './clientTypes'
 import './ClientHome.css'
 
 type ClientHomeProps = {
@@ -17,6 +18,7 @@ export function ClientHome({ user, token, onLogout }: ClientHomeProps) {
   const [cartItems, setCartItems] = useState<CartItem[]>([])
   const [locations, setLocations] = useState<Location[]>([])
   const [orders, setOrders] = useState<OrderDetail[]>([])
+  const [isCartOpen, setIsCartOpen] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
@@ -51,6 +53,7 @@ export function ClientHome({ user, token, onLogout }: ClientHomeProps) {
 
   function addCartItem(item: CartItem) {
     setCartItems((currentItems) => [...currentItems, item])
+    setIsCartOpen(true)
   }
 
   function removeCartItem(itemId: string) {
@@ -76,9 +79,15 @@ export function ClientHome({ user, token, onLogout }: ClientHomeProps) {
           <a href="#direcciones">Direcciones</a>
           <a href="#pedidos">Mis pedidos</a>
         </nav>
-        <button type="button" onClick={onLogout}>
-          Cerrar sesion
-        </button>
+        <div className="client-header__actions">
+          <button type="button" className="client-cart-button" onClick={() => setIsCartOpen(true)}>
+            Carrito
+            {cartItems.length > 0 && <span>{cartItems.length}</span>}
+          </button>
+          <button type="button" onClick={onLogout}>
+            Cerrar sesion
+          </button>
+        </div>
       </header>
 
       <section id="inicio" className="client-hero">
@@ -93,10 +102,7 @@ export function ClientHome({ user, token, onLogout }: ClientHomeProps) {
       {error && <p className="client-home__error">{error}</p>}
 
       <ClientMenuPanel
-        cartItems={cartItems}
         onAddItem={addCartItem}
-        onRemoveItem={removeCartItem}
-        onChangeQuantity={changeCartItemQuantity}
       />
 
       <ClientAddressesPanel
@@ -114,6 +120,19 @@ export function ClientHome({ user, token, onLogout }: ClientHomeProps) {
         orders={orders}
         onOrderCreated={(order) => setOrders((currentOrders) => [order, ...currentOrders])}
         onClearCart={() => setCartItems([])}
+      />
+
+      <button type="button" className="client-floating-cart" onClick={() => setIsCartOpen(true)}>
+        <span>Carrito ({cartItems.length})</span>
+        <strong>{formatCurrency(getCartTotal(cartItems))}</strong>
+      </button>
+
+      <ClientCartDrawer
+        isOpen={isCartOpen}
+        cartItems={cartItems}
+        onClose={() => setIsCartOpen(false)}
+        onRemoveItem={removeCartItem}
+        onChangeQuantity={changeCartItemQuantity}
       />
     </main>
   )

@@ -18,7 +18,7 @@
 .client-addresses__grid,
 .client-orders__grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
+  grid-template-columns: minmax(0, 1fr);
   gap: 16px;
   align-items: start;
 }
@@ -30,7 +30,6 @@
 }
 
 .client-product-card,
-.client-cart,
 .client-address-form,
 .client-address-card,
 .client-checkout,
@@ -56,7 +55,6 @@
 }
 
 .client-product-card h3,
-.client-cart h3,
 .client-address-form h3,
 .client-address-card h3,
 .client-checkout h3,
@@ -67,7 +65,6 @@
 
 .client-product-card p,
 .client-empty,
-.client-cart-item small,
 .client-address-card p,
 .client-address-card small,
 .client-checkout p,
@@ -140,8 +137,7 @@
 .client-product-card button,
 .client-address-form button,
 .client-address-card button,
-.client-checkout button,
-.client-cart-item button {
+.client-checkout button {
   padding: 10px 13px;
   border: 0;
   border-radius: 999px;
@@ -158,35 +154,6 @@
   opacity: 0.62;
 }
 
-.client-cart {
-  position: sticky;
-  top: 18px;
-  display: grid;
-  gap: 12px;
-  padding: 18px;
-}
-
-.client-cart-item {
-  display: grid;
-  gap: 10px;
-  padding: 12px;
-  border-radius: 18px;
-  background: #fff8f0;
-}
-
-.client-cart-item__actions {
-  display: flex;
-  gap: 8px;
-}
-
-.client-cart-item__actions input {
-  width: 72px;
-  padding: 9px;
-  border: 1px solid #ead4c0;
-  border-radius: 12px;
-  background: #fff;
-}
-
 .client-alert {
   margin: 0;
   padding: 12px;
@@ -201,9 +168,5 @@
   .client-orders__grid,
   .client-products {
     grid-template-columns: 1fr;
-  }
-
-  .client-cart {
-    position: static;
   }
 }

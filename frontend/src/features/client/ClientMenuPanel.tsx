@@ -6,10 +6,7 @@ import type { ProductDetail } from '../admin/products/productsApi'
 import './ClientMenuPanel.css'
 
 type ClientMenuPanelProps = {
-  cartItems: CartItem[]
   onAddItem: (item: CartItem) => void
-  onRemoveItem: (itemId: string) => void
-  onChangeQuantity: (itemId: string, quantity: number) => void
 }
 
 type ProductSelection = {
@@ -25,12 +22,7 @@ function getErrorMessage(error: unknown) {
   return 'No pudimos cargar el menu.'
 }
 
-export function ClientMenuPanel({
-  cartItems,
-  onAddItem,
-  onRemoveItem,
-  onChangeQuantity,
-}: ClientMenuPanelProps) {
+export function ClientMenuPanel({ onAddItem }: ClientMenuPanelProps) {
   const [products, setProducts] = useState<ProductDetail[]>([])
   const [selections, setSelections] = useState<Record<number, ProductSelection>>({})
   const [isLoading, setIsLoading] = useState(true)
@@ -165,32 +157,6 @@ export function ClientMenuPanel({
           })}
         </div>
 
-        <aside className="client-cart" aria-label="Carrito">
-          <h3>Carrito</h3>
-          {cartItems.length === 0 && <p className="client-empty">Tu carrito esta vacio.</p>}
-          {cartItems.map((item) => (
-            <article key={item.id} className="client-cart-item">
-              <div>
-                <strong>{item.product.name}</strong>
-                <small>
-                  {item.ingredientIds.length} adicionales
-                  {item.notes ? ` - ${item.notes}` : ''}
-                </small>
-              </div>
-              <div className="client-cart-item__actions">
-                <input
-                  min="1"
-                  type="number"
-                  value={item.quantity}
-                  onChange={(event) => onChangeQuantity(item.id, Number(event.target.value))}
-                />
-                <button type="button" onClick={() => onRemoveItem(item.id)}>
-                  Quitar
-                </button>
-              </div>
-            </article>
-          ))}
-        </aside>
       </div>
     </section>
   )

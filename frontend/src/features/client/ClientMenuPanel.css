@@ -35,6 +35,24 @@
   padding: 18px;
 }
 
+.client-product-card__image {
+  height: 180px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #f1ddc8;
+}
+
+.client-product-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 240ms var(--ease);
+}
+
+.client-product-card:hover .client-product-card__image img {
+  transform: scale(1.04);
+}
+
 .client-product-card span,
 .client-order-card span {
   color: #a5431f;

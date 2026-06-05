@@ -18,6 +18,13 @@ export class ApiError extends Error {
   }
 }
 
+export function resolveImageUrl(imageUrl: string | null | undefined): string | undefined {
+  if (!imageUrl) {
+    return undefined
+  }
+  return imageUrl.startsWith('http') ? imageUrl : `${API_URL}${imageUrl}`
+}
+
 export async function apiFetch<T>(path: string, options: ApiFetchOptions = {}): Promise<T> {
   const { token, headers, ...requestOptions } = options
   const response = await fetch(`${API_URL}${path}`, {

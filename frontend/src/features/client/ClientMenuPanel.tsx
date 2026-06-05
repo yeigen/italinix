@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { SectionHeader } from '../../components/layout/SectionHeader'
 import { EmptyState } from '../../components/ui/EmptyState'
-import { ApiError } from '../../lib/api'
+import { ApiError, resolveImageUrl } from '../../lib/api'
 import { getMenuProducts } from './clientApi'
 import { formatCurrency, type CartItem } from './clientTypes'
 import type { ProductDetail } from '../admin/products/productsApi'
@@ -123,9 +123,15 @@ export function ClientMenuPanel({ onAddItem }: ClientMenuPanelProps) {
 
           {products.map((product) => {
             const selection = selections[product.id] ?? { ingredientIds: [], notes: '' }
+            const imageSrc = resolveImageUrl(product.image_url)
 
             return (
               <article key={product.id} className="client-product-card">
+                {imageSrc && (
+                  <div className="client-product-card__image">
+                    <img src={imageSrc} alt={product.name} loading="lazy" />
+                  </div>
+                )}
                 <div>
                   <span>{product.category.name}</span>
                   <h3>{product.name}</h3>

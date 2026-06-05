@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import heroImage from '../../../assets/portada-italianix.webp'
 import { Footer } from '../../components/layout/Footer'
 import { Header } from '../../components/layout/Header'
-import { API_URL } from '../../lib/api'
+import { resolveImageUrl } from '../../lib/api'
 import type { ProductDetail } from '../admin/products/productsApi'
 import { getMenuProducts } from '../client/clientApi'
 import { formatCurrency } from '../client/clientTypes'
@@ -11,15 +11,6 @@ import './LandingPage.css'
 type LandingPageProps = {
   onLoginClick: () => void
   onRegisterClick: () => void
-}
-
-// El backend es la fuente de la verdad de las imágenes. Solo resolvemos rutas
-// relativas contra el host del backend; las absolutas se usan tal cual.
-function resolveImageSrc(imageUrl: string | null): string | undefined {
-  if (!imageUrl) {
-    return undefined
-  }
-  return imageUrl.startsWith('http') ? imageUrl : `${API_URL}${imageUrl}`
 }
 
 const steps = ['Elige tu plato', 'Personaliza ingredientes', 'Sigue tu pedido']
@@ -110,7 +101,7 @@ export function LandingPage({ onLoginClick, onRegisterClick }: LandingPageProps)
           ) : (
             <div className="landing-menu__grid">
               {products.map((product) => {
-                const imageSrc = resolveImageSrc(product.image_url)
+                const imageSrc = resolveImageUrl(product.image_url)
                 return (
                   <article key={product.id} className="landing-menu__card">
                     <div className="landing-menu__image">

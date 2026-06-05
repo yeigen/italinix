@@ -1,8 +1,10 @@
 from contextlib import asynccontextmanager
+from pathlib import Path
 import os
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from database.db import engine, Base
 from sqlalchemy import text
 from routers.auth_router import router as auth_router
@@ -52,6 +54,11 @@ app.include_router(order_router)
 app.include_router(product_router)
 app.include_router(shipping_router)
 app.include_router(user_router)
+
+# Archivos estáticos (imágenes del menú servidas por el backend, fuente de la verdad)
+STATIC_DIR = Path(__file__).parent / "static"
+STATIC_DIR.mkdir(parents=True, exist_ok=True)
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 
 @app.get("/health")
